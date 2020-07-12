@@ -7,3 +7,11 @@
     margin-bottom: 10px;
 }
 
+.update-btn {
+    margin-right: 10px;
+}
+
+.footer-message{
+  font-family: monospace;
+  margin: 1em 0;
+}

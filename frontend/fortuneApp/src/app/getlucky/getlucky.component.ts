@@ -12,7 +12,7 @@ export class GetluckyComponent implements OnInit {
   userFortune: Fortune;
   newFortune: string;
   lastAction: string;
-  state = "draw";
+  state = "draw"; // There are 3 states draw, show, update.
 
   constructor(
     private fortuneService: FortuneService,
@@ -22,31 +22,38 @@ export class GetluckyComponent implements OnInit {
     this.getFortune();
   }
 
-  drawFortune(): void {
-    this.userFortune = this.allFortune[Math.floor(Math.random() * this.allFortune.length)];
-    this.lastAction = "You opened a fortune cookie!"
-    this.state = "show";
-  }
-
   getFortune(): void {
     this.fortuneService.getFortune().subscribe(fortune => this.allFortune = fortune);
     this.userFortune = null;
     this.newFortune = "";
   }
 
-  consumeFortune(): void {
+  drawFortune(): void {
+    this.userFortune = this.allFortune[Math.floor(Math.random() * this.allFortune.length)];
+    this.lastAction = "You opened a fortune cookie! Consume it to open another cookie."
+    this.state = "show";
+  }
+
+  updateFortune(): void {
+    this.newFortune = this.newFortune.trim();
     if (this.newFortune != ""){
       var newFortune = {id: this.userFortune.id, fortune: this.newFortune};
       this.fortuneService.consumeFortune(newFortune).subscribe(_ => this.getFortune());
       this.lastAction = "You consumed a fortune cookie and changed a fortune!";
+      this.state = "draw";
     } else {
-      this.userFortune = null;
-      this.lastAction = "You consumed a fortune cookie!";
+      this.lastAction = 'You forgot to input a new fortune! you may click "Cancel Update" to open another cookie without updating the fortune.';
     }
+  }
+
+  cancelUpdate(): void {
+    this.lastAction = "You consumed a fortune cookie!";
+    this.userFortune = null;
+    this.newFortune = "";
     this.state = "draw";
   }
 
-  open(content) {
+  openConsumption(content) {
     let ngbModalOptions: NgbModalOptions = {
       backdrop : 'static',
       keyboard : false,
@@ -54,15 +61,24 @@ export class GetluckyComponent implements OnInit {
       ariaLabelledBy : 'modal-basic-title'
     };
     this.modalService.open(content, ngbModalOptions).result.then((result) => {
-      this.lastAction = `Closed with: ${result}`;
       if (result==="Yes"){
         this.state="update";
+        this.lastAction = 'Input the new fortune you want in the text field and click "Update Fortune".';
       } else {
         this.state="draw";
+        this.lastAction = "You consumed a fortune cookie!";
         this.userFortune = null;
       }
     });
   }
 
-
+  showAllFortune(content){
+    let ngbModalOptions: NgbModalOptions = {
+      scrollable: true,
+      keyboard : false,
+      centered : true,
+      ariaLabelledBy : 'modal-basic-title'
+    };
+    this.modalService.open(content, ngbModalOptions)
+  }
 }

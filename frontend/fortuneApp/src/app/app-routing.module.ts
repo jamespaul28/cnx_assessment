@@ -1,13 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-// import { GetluckyComponent } from './getlucky/getlucky.component'
 
-
-const routes: Routes = [
-  // {path: '', redirectTo: '/getlucky', pathMatch: 'full'},
-  // {path: 'getlucky', component: GetluckyComponent}
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

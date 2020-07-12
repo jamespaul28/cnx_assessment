@@ -1,16 +1,16 @@
 <div>
-    <img class="img-responsive" src="assets/icons/luck.svg" width="150" height="150">
+    <img (click)="showAllFortune(showall)" class="img-responsive" src="assets/icons/luck.svg" width="150" height="150">
     <h1 class="jumbotron-heading">Get your fortune cookie!</h1>
     <p class="text-muted fortune-text">A fortune cookie is a crisp cookie usually made from four, sugar, vanilla and sesame seed oil with a piece of paper inside, a "Fortune", on which is an aphorism or a vague prophecy.</p>
     <div *ngIf="state==='draw'">
         <button (click)="drawFortune()" class="btn btn-primary">Open Fortune Cookie</button>
     </div>
     <div *ngIf="state==='show'">
-        <button (click)="open(content)" class="btn btn-secondary">Consume Fortune Cookie</button>
+        <button (click)="openConsumption(content)" class="btn btn-secondary">Consume Fortune Cookie</button>
     </div>
     <div *ngIf="state==='update'">
-        <button (click)="consumeFortune()" class="btn btn-secondary">Update Fortune</button>
-        <button (click)="consumeFortune()" class="btn btn-secondary">Cancel Update</button>
+        <button (click)="updateFortune()" class="btn btn-primary update-btn">Update Fortune</button>
+        <button (click)="cancelUpdate()" class="btn btn-light update-btn">Cancel Update</button>
     </div>
 </div>
 <div *ngIf="userFortune">
@@ -18,20 +18,14 @@
         <h4 class="alert-heading">{{userFortune.fortune}}</h4>
     </div>
     <div *ngIf="state==='update'" class="input-group flex-nowrap new-fortune">
-    <input [(ngModel)]="newFortune" type="text" class="form-control" placeholder="Change your fortune here!" aria-label="Username" aria-describedby="addon-wrapping">
+    <input [(ngModel)]="newFortune" type="text" class="form-control" placeholder="Change fortune here!" aria-label="Username" aria-describedby="addon-wrapping">
     </div>
 </div>
-
 <hr>
+<div class="footer-message">{{ lastAction }}</div>
+<div *ngIf="state==='draw'" class="footer-message">You can click the fortune cookie image to see all possible fortune!</div>
 
-<pre>{{ lastAction }}</pre>
-
-<!-- <ul>
-    <li *ngFor="let fortune of allFortune">
-           {{fortune.fortune}}
-    </li>
-</ul> -->
-
+<!-- Before consuming modal -->
 <ng-template #content let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Before Consuming</h4>
@@ -45,6 +39,27 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Yes')">Yes</button>
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('No')">No</button>
+      <button type="button" class="btn btn-danger" (click)="modal.close('No')">No</button>
     </div>
+</ng-template>  
+
+<!-- Show all fortune modal -->
+<ng-template #showall let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">All Fortune</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <ul>
+          <li *ngFor="let fortune of allFortune">
+            {{fortune.fortune}}
+          </li>
+        </ul>
+      </div>
+    </form>
+  </div>
 </ng-template>  
