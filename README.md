@@ -3,6 +3,7 @@
 ## Pre-requisite 
 
 * Node.js must be installed in the machine (https://nodejs.org/en/download/)
+* Angular CLI must be installed in the machine. Execute `npm install -g @angular/cli@latest` to install
 
 ## Steps to launch the Web Application
 
