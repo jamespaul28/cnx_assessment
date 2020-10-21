@@ -2,15 +2,17 @@
     <img (click)="showAllFortune(showall)" class="img-responsive" src="assets/icons/luck.svg" width="150" height="150">
     <h1 class="jumbotron-heading">Get your fortune cookie!</h1>
     <p class="text-muted fortune-text">A fortune cookie is a crisp cookie usually made from four, sugar, vanilla and sesame seed oil with a piece of paper inside, a "Fortune", on which is an aphorism or a vague prophecy.</p>
-    <div *ngIf="state==='draw'">
+    <div [ngSwitch]="state">
+    <div *ngSwitchCase="'draw'">
         <button (click)="drawFortune()" class="btn btn-primary">Open Fortune Cookie</button>
     </div>
-    <div *ngIf="state==='show'">
+    <div *ngSwitchCase="'show'">
         <button (click)="openConsumption(content)" class="btn btn-secondary">Consume Fortune Cookie</button>
     </div>
-    <div *ngIf="state==='update'">
+    <div *ngSwitchCase="'update'">
         <button (click)="updateFortune()" class="btn btn-primary update-btn">Update Fortune</button>
         <button (click)="cancelUpdate()" class="btn btn-light update-btn">Cancel Update</button>
+    </div>
     </div>
 </div>
 <div *ngIf="userFortune">
