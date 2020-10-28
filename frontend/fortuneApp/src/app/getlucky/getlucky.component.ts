@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FortuneService, Fortune } from '../fortune.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ConsumeModalComponent } from './consume-modal/consume-modal.component'
+import { ConfigFortuneModalComponent } from './config-fortune-modal/config-fortune-modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-getlucky',
@@ -16,7 +19,8 @@ export class GetluckyComponent implements OnInit {
 
   constructor(
     private fortuneService: FortuneService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public translate:TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -35,8 +39,7 @@ export class GetluckyComponent implements OnInit {
     this.userFortune = this.allFortune[
       Math.floor(Math.random() * this.allFortune.length)
     ];
-    this.lastAction =
-      'You opened a fortune cookie! Consume it to open another cookie.';
+    this.lastAction = this.translate.instant('LastActionDrawFortune');
     this.state = 'show';
   }
 
@@ -46,49 +49,60 @@ export class GetluckyComponent implements OnInit {
       const newFortune = { id: this.userFortune.id, fortune: this.newFortune };
       this.fortuneService
         .consumeFortune(newFortune)
-        .subscribe((_) => this.getFortune());
-      this.lastAction = 'You consumed a fortune cookie and changed a fortune!';
-      this.state = 'draw';
+        .subscribe((affectedRows) => {
+          if (affectedRows.affected == 0) {
+            this.lastAction = this.translate.instant('LastActionSomeoneDeleted');
+          } else {
+            this.lastAction = this.translate.instant('LastActionSuccessUpdate');
+          }
+          this.state = 'draw';
+          this.getFortune()
+        });
     } else {
       this.lastAction =
-        'You forgot to input a new fortune! you may click "Cancel Update" to open another cookie without updating the fortune.';
+        this.translate.instant('LastActionForgotToUpdate');
     }
   }
 
   cancelUpdate(): void {
-    this.lastAction = 'You consumed a fortune cookie!';
+    this.lastAction = this.translate.instant('LastActionConsumedFortune');
     this.userFortune = null;
     this.newFortune = '';
     this.state = 'draw';
   }
 
-  openConsumption(content) {
+  openConsumption() {
     const ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
-      centered: true,
       ariaLabelledBy: 'modal-basic-title'
     };
-    this.modalService.open(content, ngbModalOptions).result.then((result) => {
+    this.modalService.open(ConsumeModalComponent, ngbModalOptions).result.then((result) => {
       if (result === 'Yes') {
         this.state = 'update';
         this.lastAction =
-          'Input the new fortune you want in the text field and click "Update Fortune".';
+          this.translate.instant('LastActionInputFortune');
       } else {
         this.state = 'draw';
-        this.lastAction = 'You consumed a fortune cookie!';
+        this.lastAction = this.translate.instant('LastActionConsumedFortune');
         this.userFortune = null;
       }
     });
   }
 
-  showAllFortune(content) {
+  showAllFortune() {
     const ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
       scrollable: true,
       keyboard: false,
       centered: true,
       ariaLabelledBy: 'modal-basic-title'
     };
-    this.modalService.open(content, ngbModalOptions);
+    const configModalRef = this.modalService.open(ConfigFortuneModalComponent, ngbModalOptions);
+    configModalRef.componentInstance.allFortune = this.allFortune
+    configModalRef.result
+      .then((result) => {
+        this.allFortune = result
+      })
   }
 }

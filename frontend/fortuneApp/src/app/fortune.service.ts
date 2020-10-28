@@ -8,6 +8,18 @@ export interface Fortune {
   fortune: string;
 }
 
+export class AddFortuneRequest {
+  fortune: string;
+
+  constructor(){
+    this.fortune = ''
+  }
+}
+
+export class DeleteFortuneRequest {
+  IDs: number[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,5 +38,13 @@ export class FortuneService {
 
   consumeFortune(newFortune: Fortune): Observable<any> {
     return this.http.put(this.apiURL, newFortune, this.httpOptions);
+  }
+
+  addFortune(toAdd: AddFortuneRequest): Observable<{}> {
+    return this.http.post(this.apiURL, toAdd, this.httpOptions)
+  }
+
+  deleteFortune(toDelete: DeleteFortuneRequest): Observable<{}> {
+    return this.http.post(this.apiURL + '/deletefortunes',toDelete,this.httpOptions)
   }
 }

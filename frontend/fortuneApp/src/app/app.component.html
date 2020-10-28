@@ -1,5 +1,14 @@
 <body>
   <div class="container">
+    <div class="py-5 text-right">
+      <select #langSelect (change)="translate.use(langSelect.value)">
+        <option
+          *ngFor="let lang of translate.getLangs()"
+          [value]="lang"
+          [attr.selected]="lang === translate.currentLang ? '' : null"
+        >{{lang}}</option>
+      </select>
+    </div>
     <div class="py-5 text-center">
       <app-getlucky></app-getlucky>
     </div>

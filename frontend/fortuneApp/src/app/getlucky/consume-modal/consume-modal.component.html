@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{'BeforeConsuming' | translate}}</h4>
+</div>
+<div class="modal-body">
+    <form>
+    <div class="form-group">
+        <p>{{'BeforeConsumingConfirmation' | translate}}</p>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Yes')">{{'Yes' | translate}}</button>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close('No')">{{'No' | translate}}</button>
+</div>

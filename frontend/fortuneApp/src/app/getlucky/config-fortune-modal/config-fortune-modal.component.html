@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{'AllFortune' | translate}} <fa-icon [icon]="faCogs" (click)="edit()"></fa-icon></h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(allFortune)">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form>
+    <div class="form-group">
+        <ul>
+        <li *ngFor="let fortune of allFortune">
+            <input type="checkbox" (change)="isDelete(fortune.id)" *ngIf="editMode">
+            {{fortune.fortune}}
+        </li>
+        </ul>
+    </div>
+    </form>
+</div>
+<div class="modal-footer" *ngIf="editMode">
+    <input [(ngModel)]="newFortune.fortune" type="text" class="form-control" placeholder="{{translate.instant('AddFortunePlaceHolder')}}" aria-label="Username" aria-describedby="addon-wrapping">
+    <button type="button" class="btn btn-outline-dark" (click)="AddFortune()" [disabled]='newFortune.fortune.length==0'>
+        <div *ngIf="!isAdding">
+            {{'Add' | translate}}
+        </div>
+        <div *ngIf="isAdding">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {{'Adding' | translate}}
+        </div>
+    </button>
+    <button type="button" class="btn btn-danger" (click)="DeleteFortune()" [disabled]='listToDel.IDs.length==0'>
+        <div *ngIf="!isDeleting">
+            {{'Delete' | translate}}
+        </div>
+        <div *ngIf="isDeleting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            {{'Deleting' | translate}}
+        </div>
+    </button>
+</div>
