@@ -1,29 +1,50 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 
 // Cors related
-const cors = require('cors')
+const cors = require('cors');
 var corsOptions = {
   origin: 'http://localhost:4200',
   optionsSuccessStatus: 200,
-}
-app.use(cors(corsOptions))
+};
+app.use(cors(corsOptions));
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 app.listen(8000, () => {
     console.log('Server started!')
-  })
+});
 
+// For getting fortune list.
 app.route('/api/fortune').get((req, res) => {
     res.send(fortuneList)
-})
+});
 
+// For updating a fortune.
 app.route('/api/fortune').put((req, res) => {
-    fortuneList[req.body.id] = req.body;
+    fortuneList.forEach(elem => {
+      if (elem.id === req.body.id) {
+        elem.fortune = req.body.fortune;
+      }
+    });
     res.status(201).send(req.body)
-})
+});
+
+// For adding a new fortune.
+app.route('/api/fortune').post((req, res) => {
+  fortuneList.push({id:lastID, fortune:req.body.fortune})
+  lastID++;
+  res.status(200).send();
+});
+
+// For deleting a fortune.
+app.route('/api/fortune/deletefortunes').post((req, res) => {
+  fortuneList = fortuneList.filter(elem => {
+    return !req.body.IDs.includes(elem.id)
+  });
+  res.status(200).send();
+});
 
 // Initial Fortune list
 fortuneList = [
@@ -128,3 +149,5 @@ fortuneList = [
     { id: 98, fortune: "As one door closes, another always opens." },
     { id: 99, fortune: "As you go through life, make this your goal, watch the doughnut and not the hole." }
 ];
+
+lastID = fortuneList.length;

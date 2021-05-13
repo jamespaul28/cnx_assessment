@@ -45,6 +45,6 @@ export class FortuneService {
   }
 
   deleteFortune(toDelete: DeleteFortuneRequest): Observable<{}> {
-    return this.http.post(this.apiURL + '/deletefortunes',toDelete,this.httpOptions)
+    return this.http.post(this.apiURL + '/deletefortunes', toDelete, this.httpOptions)
   }
 }
