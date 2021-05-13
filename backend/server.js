@@ -23,12 +23,14 @@ app.route('/api/fortune').get((req, res) => {
 
 // For updating a fortune.
 app.route('/api/fortune').put((req, res) => {
+    updated = false;
     fortuneList.forEach(elem => {
       if (elem.id === req.body.id) {
         elem.fortune = req.body.fortune;
+        updated = true;
       }
     });
-    res.status(201).send(req.body)
+    res.status(201).send(updated)
 });
 
 // For adding a new fortune.
@@ -47,6 +49,7 @@ app.route('/api/fortune/deletefortunes').post((req, res) => {
 });
 
 // Initial Fortune list
+// For E2E testing, only entries from 0-4 is needed. Uncomment the rest for successful E2E tests results.
 fortuneList = [
     { id: 0, fortune: "A friend's frown is better than a fool's smile." },
     { id: 1, fortune: "A friend in need is a friend indeed." },

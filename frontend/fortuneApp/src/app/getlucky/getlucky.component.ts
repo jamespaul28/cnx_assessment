@@ -49,11 +49,11 @@ export class GetluckyComponent implements OnInit {
       const newFortune = { id: this.userFortune.id, fortune: this.newFortune };
       this.fortuneService
         .consumeFortune(newFortune)
-        .subscribe((affectedRows) => {
-          if (affectedRows.affected == 0) {
-            this.lastAction = this.translate.instant('LastActionSomeoneDeleted');
-          } else {
+        .subscribe((updated) => {
+          if (updated) {
             this.lastAction = this.translate.instant('LastActionSuccessUpdate');
+          } else {
+            this.lastAction = this.translate.instant('LastActionSomeoneDeleted');
           }
           this.state = 'draw';
           this.getFortune()

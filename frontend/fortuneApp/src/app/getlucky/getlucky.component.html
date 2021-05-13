@@ -17,12 +17,12 @@
 </div>
 <div *ngIf="userFortune">
     <div class="alert alert-light fortune-text" role="alert">
-        <h4 class="alert-heading">{{userFortune.fortune}}</h4>
+        <h4 id="userFortune" class="alert-heading">{{userFortune.fortune}}</h4>
     </div>
     <div *ngIf="state==='update'" class="input-group flex-nowrap new-fortune">
     <input [(ngModel)]="newFortune" type="text" class="form-control" placeholder="{{translate.instant('ChangefortunePlaceHolder')}}" aria-label="Username" aria-describedby="addon-wrapping">
     </div>
 </div>
 <hr>
-<div class="footer-message">{{ lastAction }}</div>
-<div *ngIf="state==='draw'" class="footer-message">{{'SeeAllFortune' | translate}}</div>
+<div id="actionLast" class="footer-message">{{ lastAction }}</div>
+<div id="seeAllFortune" *ngIf="state==='draw'" class="footer-message">{{'SeeAllFortune' | translate}}</div>

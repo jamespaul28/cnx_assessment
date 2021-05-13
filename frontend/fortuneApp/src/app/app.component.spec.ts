@@ -1,20 +1,24 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, inject } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import { I18nModule } from './i18n/i18n.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [AppComponent]
+      imports: [RouterTestingModule, I18nModule],
+      declarations: [AppComponent],
+      providers: [NgbActiveModal]
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the app', async(inject([NgbActiveModal], (activeModal: NgbActiveModal) => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
+  })));
 
   it(`should have as title 'fortuneApp'`, () => {
     const fixture = TestBed.createComponent(AppComponent);

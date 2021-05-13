@@ -8,7 +8,7 @@
     <form>
     <div class="form-group">
         <ul>
-        <li *ngFor="let fortune of allFortune">
+        <li *ngFor="let fortune of allFortune; let i = index" value="{{i}}">
             <input type="checkbox" (change)="isDelete(fortune.id)" *ngIf="editMode">
             {{fortune.fortune}}
         </li>
@@ -17,8 +17,8 @@
     </form>
 </div>
 <div class="modal-footer" *ngIf="editMode">
-    <input [(ngModel)]="newFortune.fortune" type="text" class="form-control" placeholder="{{translate.instant('AddFortunePlaceHolder')}}" aria-label="Username" aria-describedby="addon-wrapping">
-    <button type="button" class="btn btn-outline-dark" (click)="AddFortune()" [disabled]='newFortune.fortune.length==0'>
+    <input id="inputNewFortune" [(ngModel)]="newFortune.fortune" type="text" class="form-control" placeholder="{{translate.instant('AddFortunePlaceHolder')}}" aria-label="Username" aria-describedby="addon-wrapping">
+    <button id="addFortuneBtn" type="button" class="btn btn-outline-dark" (click)="AddFortune()" [disabled]='newFortune.fortune.length==0'>
         <div *ngIf="!isAdding">
             {{'Add' | translate}}
         </div>
@@ -27,7 +27,7 @@
             {{'Adding' | translate}}
         </div>
     </button>
-    <button type="button" class="btn btn-danger" (click)="DeleteFortune()" [disabled]='listToDel.IDs.length==0'>
+    <button id="deleteFortuneBtn" type="button" class="btn btn-danger" (click)="DeleteFortune()" [disabled]='listToDel.IDs.length==0'>
         <div *ngIf="!isDeleting">
             {{'Delete' | translate}}
         </div>
